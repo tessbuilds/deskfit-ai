@@ -1,580 +1,1089 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Privacy Policy — DeskFit</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #07101F;
-    --bg2: #0D1E35;
-    --accent: #2E7EFF;
-    --accent2: #00C2FF;
-    --green: #00E676;
-    --text: #E8EDF5;
-    --muted: rgba(232,237,245,0.45);
-    --border: rgba(46,126,255,0.15);
-    --card: rgba(255,255,255,0.03);
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeskFit AI — AI Workouts for Desk Workers</title>
+  <meta name="description" content="AI-powered workout plans built for desk workers. No equipment. No gym. Just move." />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:      #06090f;
+      --surface: #0d1220;
+      --accent:  #2e7eff;
+      --accent2: #00c2ff;
+      --green:   #00e676;
+      --text:    #e8edf5;
+      --muted:   rgba(232,237,245,0.45);
+      --border:  rgba(46,126,255,0.15);
+    }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
-  html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    line-height: 1.75;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+    /* ── Ambient background ── */
+    .bg-orbs {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.18;
+    }
+    .orb-1 { width: 600px; height: 600px; background: var(--accent);  top: -200px; left: -150px; animation: drift1 18s ease-in-out infinite alternate; }
+    .orb-2 { width: 400px; height: 400px; background: var(--accent2); bottom: 0;   right: -100px; animation: drift2 22s ease-in-out infinite alternate; }
+    .orb-3 { width: 300px; height: 300px; background: var(--green);   top: 40%;   left: 40%;  animation: drift3 14s ease-in-out infinite alternate; opacity: 0.08; }
 
-  /* Background */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 60% 50% at 10% 10%, rgba(46,126,255,0.08) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 40% at 90% 80%, rgba(0,194,255,0.06) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
-  }
+    @keyframes drift1 { from { transform: translate(0,0) scale(1); }   to { transform: translate(60px, 80px) scale(1.1); } }
+    @keyframes drift2 { from { transform: translate(0,0) scale(1); }   to { transform: translate(-50px,-60px) scale(1.15); } }
+    @keyframes drift3 { from { transform: translate(0,0); }            to { transform: translate(40px, -40px); } }
 
-  .wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(6,9,15,0.7);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+    }
 
-  /* Nav */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(7,16,31,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 0;
-  }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
 
-  nav .wrap {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
 
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-  }
+    .nav-links a {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
 
-  .logo-icon {
-    width: 36px;
-    height: 36px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-  }
+    .nav-cta {
+      font-size: 0.82rem !important;
+      font-weight: 500 !important;
+      color: var(--text) !important;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      padding: 8px 20px;
+      border-radius: 100px;
+      transition: opacity 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover { opacity: 0.88 !important; transform: translateY(-1px) !important; }
 
-  .logo-name {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    color: var(--text);
-  }
+    /* ── Sections base ── */
+    section { position: relative; z-index: 1; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
 
-  .nav-badge {
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 300;
-    letter-spacing: 0.05em;
-  }
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 0 80px;
+    }
 
-  /* Hero */
-  .hero {
-    padding: 80px 0 56px;
-    border-bottom: 1px solid var(--border);
-  }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
 
-  .hero-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: rgba(46,126,255,0.1);
-    border: 1px solid rgba(46,126,255,0.2);
-    padding: 6px 14px;
-    border-radius: 100px;
-    margin-bottom: 24px;
-  }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      border: 1px solid rgba(0,194,255,0.25);
+      background: rgba(0,194,255,0.07);
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+      animation: fadeUp 0.6s ease both;
+    }
 
-  .hero-label::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-  }
+    .hero-tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: blink 2s ease-in-out infinite;
+    }
 
-  h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(36px, 6vw, 56px);
-    font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    margin-bottom: 20px;
-    color: var(--text);
-  }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-  h1 span {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 24px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
 
-  .hero-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-    margin-top: 32px;
-  }
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-  .meta-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    color: var(--muted);
-  }
+    .hero-sub {
+      font-size: 1.05rem;
+      color: rgba(232,237,245,0.6);
+      font-weight: 300;
+      max-width: 440px;
+      margin-bottom: 36px;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
 
-  .meta-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-    flex-shrink: 0;
-  }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
 
-  /* TOC */
-  .toc {
-    margin: 48px 0 0;
-    padding: 28px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-  }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      padding: 14px 28px;
+      border-radius: 14px;
+      text-decoration: none;
+      box-shadow: 0 8px 32px rgba(46,126,255,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(46,126,255,0.45); }
 
-  .toc-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 16px;
-  }
+    .btn-secondary {
+      font-size: 0.88rem;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .btn-secondary:hover { color: var(--text); }
 
-  .toc-list {
-    list-style: none;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px 24px;
-  }
+    /* ── Phone mockup ── */
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
 
-  @media (max-width: 500px) { .toc-list { grid-template-columns: 1fr; } }
+    .phone {
+      width: 260px;
+      height: 520px;
+      background: var(--surface);
+      border-radius: 44px;
+      border: 1.5px solid rgba(255,255,255,0.1);
+      box-shadow:
+        0 0 0 1px rgba(46,126,255,0.15),
+        0 40px 80px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      position: relative;
+      overflow: hidden;
+      animation: float 6s ease-in-out infinite;
+    }
 
-  .toc-list a {
-    color: var(--text);
-    text-decoration: none;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    opacity: 0.7;
-    transition: opacity 0.2s, color 0.2s;
-  }
+    @keyframes float {
+      0%,100% { transform: translateY(0px) rotate(-1deg); }
+      50%      { transform: translateY(-16px) rotate(1deg); }
+    }
 
-  .toc-list a:hover { opacity: 1; color: var(--accent2); }
+    .phone-notch {
+      position: absolute;
+      top: 16px; left: 50%;
+      transform: translateX(-50%);
+      width: 80px; height: 6px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 3px;
+    }
 
-  .toc-list a::before {
-    content: counter(item, decimal-leading-zero);
-    counter-increment: item;
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--accent);
-    opacity: 0.6;
-    font-family: 'Syne', sans-serif;
-    min-width: 24px;
-  }
+    .phone-screen {
+      position: absolute;
+      inset: 0;
+      padding: 48px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-  .toc-list { counter-reset: item; }
+    .phone-header {
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .phone-header-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: rgba(232,237,245,0.9);
+    }
+    .phone-header-sub {
+      font-size: 0.6rem;
+      color: rgba(232,237,245,0.4);
+      margin-top: 2px;
+    }
 
-  /* Sections */
-  .sections { padding: 56px 0 80px; }
+    .phone-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
 
-  .section {
-    padding: 48px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
+    .phone-card-label {
+      font-size: 0.55rem;
+      font-weight: 500;
+      color: rgba(232,237,245,0.4);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
 
-  .section.visible { opacity: 1; transform: translateY(0); }
-  .section:last-child { border-bottom: none; }
+    .phone-pill-row {
+      display: flex;
+      gap: 6px;
+    }
 
-  .section-number {
-    font-family: 'Syne', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: 0.6;
-    margin-bottom: 8px;
-  }
+    .phone-pill {
+      flex: 1;
+      padding: 6px 0;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      text-align: center;
+      font-size: 0.55rem;
+      color: rgba(232,237,245,0.5);
+    }
 
-  h2 {
-    font-family: 'Syne', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    margin-bottom: 20px;
-    color: var(--text);
-    scroll-margin-top: 90px;
-  }
+    .phone-pill.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
 
-  p {
-    color: rgba(232,237,245,0.72);
-    margin-bottom: 16px;
-    font-weight: 300;
-  }
+    .phone-btn {
+      margin-top: 4px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.04em;
+    }
 
-  p:last-child { margin-bottom: 0; }
+    .phone-exercise-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-  ul {
-    list-style: none;
-    margin: 16px 0;
-  }
+    .phone-exercise-icon {
+      width: 26px; height: 26px;
+      background: rgba(46,126,255,0.15);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
 
-  ul li {
-    position: relative;
-    padding-left: 20px;
-    color: rgba(232,237,245,0.72);
-    font-weight: 300;
-    margin-bottom: 10px;
-  }
+    .phone-exercise-text { flex: 1; }
+    .phone-exercise-name {
+      font-size: 0.58rem;
+      font-weight: 500;
+      color: rgba(232,237,245,0.85);
+    }
+    .phone-exercise-meta {
+      font-size: 0.52rem;
+      color: rgba(232,237,245,0.35);
+    }
 
-  ul li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 11px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    opacity: 0.5;
-  }
+    /* ── Stats row ── */
+    .stats {
+      padding: 40px 0 80px;
+    }
 
-  /* Highlight card */
-  .highlight {
-    background: rgba(46,126,255,0.06);
-    border: 1px solid rgba(46,126,255,0.2);
-    border-radius: 14px;
-    padding: 20px 24px;
-    margin: 20px 0;
-  }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
 
-  .highlight p {
-    color: rgba(232,237,245,0.85);
-    margin: 0;
-    font-size: 15px;
-  }
+    .stat-item {
+      background: var(--surface);
+      padding: 32px 28px;
+      text-align: center;
+    }
 
-  .highlight strong {
-    color: var(--accent2);
-    font-weight: 500;
-  }
+    .stat-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
 
-  /* Green highlight */
-  .highlight-green {
-    background: rgba(0,230,118,0.05);
-    border-color: rgba(0,230,118,0.2);
-  }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 300;
+    }
 
-  .highlight-green p { color: rgba(232,237,245,0.85); }
-  .highlight-green strong { color: var(--green); }
+    /* ── Features ── */
+    .features { padding: 80px 0; }
 
-  /* Contact card */
-  .contact-card {
-    margin-top: 24px;
-    padding: 28px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
 
-  .contact-icon {
-    width: 52px;
-    height: 52px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    flex-shrink: 0;
-  }
+    .section-label::before {
+      content: '';
+      width: 20px; height: 1.5px;
+      background: var(--accent);
+    }
 
-  .contact-text p { margin: 0; font-size: 14px; }
-  .contact-text a {
-    color: var(--accent2);
-    text-decoration: none;
-    font-weight: 500;
-  }
-  .contact-text a:hover { text-decoration: underline; }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: #fff;
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
 
-  /* Footer */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 40px 0;
-    text-align: center;
-  }
+    .section-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 480px;
+      margin-bottom: 56px;
+    }
 
-  footer p {
-    font-size: 13px;
-    color: var(--muted);
-    margin: 0;
-  }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
 
-  footer a {
-    color: var(--accent);
-    text-decoration: none;
-  }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      transition: border-color 0.3s, transform 0.3s;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.3s;
+    }
 
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: rgba(46,126,255,0.3); border-radius: 3px; }
-</style>
+    .feature-card.visible { opacity: 1; transform: translateY(0); }
+    .feature-card:hover { border-color: rgba(46,126,255,0.35); transform: translateY(-4px); }
+
+    .feature-icon {
+      font-size: 1.8rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .feature-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .feature-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    /* ── How it works ── */
+    .how { padding: 80px 0; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 56px;
+    }
+
+    .step {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .step.visible { opacity: 1; transform: translateY(0); }
+
+    .step-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, rgba(46,126,255,0.3), rgba(0,194,255,0.1));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+    }
+
+    .step-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .step-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.65;
+    }
+
+    /* ── Pricing ── */
+    .pricing { padding: 80px 0; }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 56px;
+    }
+
+    .pricing-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 32px 28px;
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .pricing-card.visible { opacity: 1; transform: translateY(0); }
+    .pricing-card.featured { border-color: var(--accent); background: rgba(46,126,255,0.06); }
+
+    .pricing-badge {
+      position: absolute;
+      top: -12px; left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      padding: 4px 14px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    .pricing-plan {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .pricing-price {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .pricing-price sup {
+      font-size: 1.2rem;
+      vertical-align: super;
+      font-weight: 600;
+    }
+
+    .pricing-cadence {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .pricing-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .pricing-features li {
+      font-size: 0.88rem;
+      color: rgba(232,237,245,0.7);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 600;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .pricing-btn {
+      display: block;
+      text-align: center;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .pricing-btn.outline {
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .pricing-btn.filled {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(46,126,255,0.3);
+    }
+
+    .pricing-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: 80px 0 120px;
+    }
+
+    .cta-box {
+      background: var(--surface);
+      border: 1px solid rgba(46,126,255,0.25);
+      border-radius: 32px;
+      padding: 64px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(46,126,255,0.12), transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: #fff;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .cta-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 440px;
+      margin: 0 auto 36px;
+      position: relative;
+    }
+
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .app-store-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.88rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .app-store-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.4); }
+
+    .app-store-icon { font-size: 1.3rem; }
+
+    /* ── Footer ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--text); }
+
+    .footer-copy {
+      font-size: 0.78rem;
+      color: rgba(232,237,245,0.25);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .hero-inner      { grid-template-columns: 1fr; text-align: center; }
+      .hero-visual     { display: none; }
+      .hero-sub        { margin: 0 auto 36px; }
+      .hero-actions    { justify-content: center; }
+      .features-grid   { grid-template-columns: 1fr 1fr; }
+      .steps           { grid-template-columns: 1fr; gap: 40px; }
+      .pricing-grid    { grid-template-columns: 1fr; max-width: 380px; margin-left: auto; margin-right: auto; }
+      .stats-grid      { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      nav              { padding: 14px 20px; }
+      .nav-links       { display: none; }
+      .wrap            { padding: 0 20px; }
+      .features-grid   { grid-template-columns: 1fr; }
+      .stats-grid      { grid-template-columns: 1fr 1fr; }
+      .cta-box         { padding: 40px 24px; }
+      .footer-inner    { flex-direction: column; text-align: center; }
+      .footer-links    { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
 </head>
 <body>
 
-<nav>
-  <div class="wrap">
-    <a href="#" class="logo">
-      <div class="logo-icon">💪</div>
-      <span class="logo-name">DeskFit</span>
-    </a>
-    <span class="nav-badge">Privacy Policy</span>
-  </div>
-</nav>
-
-<div class="wrap">
-
-  <div class="hero">
-    <div class="hero-label">Legal</div>
-    <h1>Your privacy<br><span>matters to us.</span></h1>
-    <p style="font-size:17px; color: rgba(232,237,245,0.6); max-width: 520px; font-weight:300;">
-      DeskFit is designed with privacy at its core. We collect only what we need to make your workouts better — nothing more.
-    </p>
-    <div class="hero-meta">
-      <div class="meta-item">
-        <div class="meta-dot"></div>
-        Effective: March 7, 2026
-      </div>
-      <div class="meta-item">
-        <div class="meta-dot" style="background: var(--accent2)"></div>
-        App: DeskFit
-      </div>
-      <div class="meta-item">
-        <div class="meta-dot" style="background: var(--accent)"></div>
-        Developer: Tess
-      </div>
-    </div>
-
-    <div class="toc">
-      <div class="toc-title">Contents</div>
-      <ol class="toc-list">
-        <li><a href="#data-collected">Data We Collect</a></li>
-        <li><a href="#data-use">How We Use It</a></li>
-        <li><a href="#ai">AI & Claude API</a></li>
-        <li><a href="#third-party">Third Parties</a></li>
-        <li><a href="#storage">Data Storage</a></li>
-        <li><a href="#children">Children</a></li>
-        <li><a href="#rights">Your Rights</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ol>
-    </div>
+  <!-- Ambient orbs -->
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
   </div>
 
-  <div class="sections">
-
-    <div class="section" id="data-collected">
-      <div class="section-number">01</div>
-      <h2>Data We Collect</h2>
-      <p>DeskFit is a local-first app. The vast majority of your data never leaves your device.</p>
-
-      <div class="highlight highlight-green">
-        <p><strong>No account required.</strong> DeskFit does not require you to create an account, provide an email address, or sign in with any service.</p>
-      </div>
-
-      <p>The following data is stored <strong>locally on your device only</strong>:</p>
-      <ul>
-        <li>Your first name (entered during onboarding)</li>
-        <li>Fitness level and goal preferences</li>
-        <li>Work schedule and break reminder settings</li>
-        <li>Workout history and session data</li>
-        <li>Streak and progress information</li>
-        <li>Selected app theme</li>
-      </ul>
-
-      <p>The following data is sent to third-party services <strong>only when you generate a workout</strong>:</p>
-      <ul>
-        <li>Your first name</li>
-        <li>Fitness level, goal, selected duration, and location type</li>
-      </ul>
+  <!-- Nav -->
+  <nav>
+    <a href="index.html" class="nav-logo">tessbuilds</a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="#download" class="nav-cta">Download Free</a>
     </div>
+  </nav>
 
-    <div class="section" id="data-use">
-      <div class="section-number">02</div>
-      <h2>How We Use Your Data</h2>
-      <p>We use the data we collect solely to provide and improve DeskFit's features:</p>
-      <ul>
-        <li>To generate personalized AI workouts tailored to your fitness level and goals</li>
-        <li>To display your progress, streaks, and workout history</li>
-        <li>To schedule stretch break and workout reminder notifications</li>
-        <li>To remember your preferences between sessions</li>
-      </ul>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <div class="hero-tag">Now on the App Store</div>
+          <h1>Your desk is your<br /><em>gym now.</em></h1>
+          <p class="hero-sub">
+            DeskFit AI builds personalized workouts for desk workers in seconds.
+            No equipment. No commute. Just move.
+          </p>
+          <div class="hero-actions">
+            <a href="#download" class="btn-primary">
+              <span>🍎</span> Download Free
+            </a>
+            <a href="#how" class="btn-secondary">
+              See how it works →
+            </a>
+          </div>
+        </div>
 
-      <div class="highlight">
-        <p><strong>We do not sell your data.</strong> We do not use your data for advertising. We do not share your data with marketers or data brokers — ever.</p>
-      </div>
-    </div>
+        <!-- Phone mockup -->
+        <div class="hero-visual">
+          <div class="phone">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="phone-header">
+                <div class="phone-header-title">Hi Yeron! 👋</div>
+                <div class="phone-header-sub">Let's build your workout</div>
+              </div>
 
-    <div class="section" id="ai">
-      <div class="section-number">03</div>
-      <h2>AI &amp; Claude API</h2>
-      <p>DeskFit uses Anthropic's Claude API to generate workout plans. When you tap "Generate AI Workout," a request is sent to Anthropic's servers containing:</p>
-      <ul>
-        <li>Your first name</li>
-        <li>Selected workout duration (10, 20, or 30 minutes)</li>
-        <li>Selected location (desk, home, or gym)</li>
-        <li>Your fitness level and goal</li>
-      </ul>
+              <div class="phone-card">
+                <div class="phone-card-label">Duration</div>
+                <div class="phone-pill-row">
+                  <div class="phone-pill">10 min</div>
+                  <div class="phone-pill active">20 min</div>
+                  <div class="phone-pill">30 min</div>
+                </div>
+              </div>
 
-      <div class="highlight">
-        <p><strong>No sensitive data is sent to Anthropic.</strong> We never send your workout history, device information, location, or any other personal data to the Claude API.</p>
-      </div>
+              <div class="phone-card">
+                <div class="phone-card-label">Location</div>
+                <div class="phone-pill-row">
+                  <div class="phone-pill active">🖥️ Desk</div>
+                  <div class="phone-pill">🏠 Home</div>
+                  <div class="phone-pill">🏋️ Gym</div>
+                </div>
+              </div>
 
-      <p>Anthropic's data handling is governed by their own privacy policy, available at <a href="https://anthropic.com/privacy" target="_blank" style="color: var(--accent2);">anthropic.com/privacy</a>. We recommend reviewing it if you have questions about how API requests are processed.</p>
-    </div>
+              <div class="phone-btn">✨ Generate AI Workout</div>
 
-    <div class="section" id="third-party">
-      <div class="section-number">04</div>
-      <h2>Third Parties</h2>
-      <p>DeskFit integrates with the following third-party services:</p>
-      <ul>
-        <li><strong>Anthropic Claude API</strong> — AI workout generation (see Section 3)</li>
-        <li><strong>Apple StoreKit</strong> — In-app purchase processing for DeskFit Pro. Apple handles all payment processing; we never see or store your payment information.</li>
-        <li><strong>Apple Push Notifications (APNs)</strong> — Used to deliver stretch break and workout reminders. Notification tokens are managed by Apple.</li>
-      </ul>
-      <p>We do not integrate any advertising SDKs, analytics platforms, or social media trackers.</p>
-    </div>
-
-    <div class="section" id="storage">
-      <div class="section-number">05</div>
-      <h2>Data Storage &amp; Security</h2>
-      <p>All personal data — your name, preferences, workout history, and progress — is stored locally on your device using Apple's SwiftData framework and UserDefaults. This data is included in your iCloud device backup if you have iCloud backup enabled.</p>
-
-      <div class="highlight highlight-green">
-        <p><strong>Deleting the app deletes your data.</strong> When you delete DeskFit from your device, all locally stored data is permanently removed. There is no server-side backup.</p>
-      </div>
-
-      <p>We do not operate any servers that store your personal information.</p>
-    </div>
-
-    <div class="section" id="children">
-      <div class="section-number">06</div>
-      <h2>Children's Privacy</h2>
-      <p>DeskFit is not directed at children under the age of 13. We do not knowingly collect personal information from children under 13. If you believe a child under 13 has provided us with personal information, please contact us and we will take steps to delete it.</p>
-    </div>
-
-    <div class="section" id="rights">
-      <div class="section-number">07</div>
-      <h2>Your Rights</h2>
-      <p>Since DeskFit stores all data locally on your device, you have full control over your data at all times:</p>
-      <ul>
-        <li><strong>Access</strong> — All your data is visible within the app (progress, history, settings)</li>
-        <li><strong>Correction</strong> — Update your name, preferences, and schedule anytime in Settings</li>
-        <li><strong>Deletion</strong> — Delete the app to permanently remove all data</li>
-        <li><strong>Reset</strong> — Use "Reset Onboarding" in Settings to start fresh</li>
-      </ul>
-      <p>If you are located in the EU/EEA, you may have additional rights under the GDPR. As DeskFit does not collect or process personal data on our servers, most GDPR obligations do not apply. For any questions, contact us below.</p>
-    </div>
-
-    <div class="section" id="contact">
-      <div class="section-number">08</div>
-      <h2>Contact Us</h2>
-      <p>If you have any questions about this Privacy Policy or how DeskFit handles your data, please reach out:</p>
-
-      <div class="contact-card">
-        <div class="contact-icon">✉️</div>
-        <div class="contact-text">
-          <p style="font-weight:500; margin-bottom:4px;">Tess — DeskFit Developer</p>
-          <p><a href="mailto:privacy@deskfit.app">privacy@deskfit.app</a></p>
-          <p style="font-size:13px; color: var(--muted); margin-top:4px;">We aim to respond within 48 hours.</p>
+              <div class="phone-card">
+                <div class="phone-card-label">Your Plan · 4 exercises</div>
+                <div style="display:flex; flex-direction:column; gap:8px; margin-top:4px;">
+                  <div class="phone-exercise-row">
+                    <div class="phone-exercise-icon">🧘</div>
+                    <div class="phone-exercise-text">
+                      <div class="phone-exercise-name">Neck Rolls</div>
+                      <div class="phone-exercise-meta">3 sets · 30s</div>
+                    </div>
+                  </div>
+                  <div class="phone-exercise-row">
+                    <div class="phone-exercise-icon">💪</div>
+                    <div class="phone-exercise-text">
+                      <div class="phone-exercise-name">Desk Push-Ups</div>
+                      <div class="phone-exercise-meta">3 sets · 12 reps</div>
+                    </div>
+                  </div>
+                  <div class="phone-exercise-row">
+                    <div class="phone-exercise-icon">🦵</div>
+                    <div class="phone-exercise-text">
+                      <div class="phone-exercise-name">Chair Squats</div>
+                      <div class="phone-exercise-meta">3 sets · 15 reps</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <p style="margin-top: 24px;">We may update this Privacy Policy from time to time. Changes will be reflected with a new effective date at the top of this page. Continued use of DeskFit after changes constitutes acceptance of the updated policy.</p>
     </div>
+  </section>
 
-  </div>
-</div>
+  <!-- Stats -->
+  <section class="stats">
+    <div class="wrap">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-value">3</div>
+          <div class="stat-label">Free workouts to start</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">10s</div>
+          <div class="stat-label">To generate a plan</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">0</div>
+          <div class="stat-label">Equipment needed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">AI</div>
+          <div class="stat-label">Powered by Claude</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<footer>
-  <div class="wrap">
-    <p>© 2026 DeskFit · <a href="#">Back to top ↑</a></p>
-  </div>
-</footer>
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="wrap">
+      <div class="section-label">Features</div>
+      <h2 class="section-title">Built for people<br />who sit all day.</h2>
+      <p class="section-sub">Every feature designed around the reality of desk work — limited time, limited space, and a body that needs to move.</p>
 
-<script>
-  // Scroll reveal
-  const sections = document.querySelectorAll('.section');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  sections.forEach(s => observer.observe(s));
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon">🤖</span>
+          <div class="feature-title">AI-Generated Plans</div>
+          <div class="feature-desc">Powered by Anthropic's Claude. Every workout is freshly generated for your goals, fitness level, and available time.</div>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🖥️</span>
+          <div class="feature-title">Desk, Home, or Gym</div>
+          <div class="feature-desc">Works wherever you are. Chair squats at your desk, yoga at home, or a full session at the gym — your call.</div>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">⏱️</span>
+          <div class="feature-title">10, 20, or 30 Minutes</div>
+          <div class="feature-desc">Fit a real workout into any gap in your day. Even 10 minutes is enough to make a difference.</div>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🔔</span>
+          <div class="feature-title">Smart Reminders</div>
+          <div class="feature-desc">Stretch reminders that actually respect your schedule. Set your work hours and we'll nudge you at the right time.</div>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📊</span>
+          <div class="feature-title">Progress Tracking</div>
+          <div class="feature-desc">Weekly goals, streaks, and 28-day history so you can see the consistency building up over time.</div>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🎨</span>
+          <div class="feature-title">Themes & Personalization</div>
+          <div class="feature-desc">Multiple app themes. Your name in the greeting. Fitness level and goal settings that actually change what gets generated.</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  // Smooth anchor scroll
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      const target = document.querySelector(a.getAttribute('href'));
-      if (target) target.scrollIntoView({ behavior: 'smooth' });
+  <!-- How it works -->
+  <section class="how" id="how">
+    <div class="wrap">
+      <div class="section-label">How it works</div>
+      <h2 class="section-title">Three taps to<br />your next workout.</h2>
+      <p class="section-sub">No account. No onboarding maze. Open the app and move.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">01</div>
+          <div class="step-title">Pick your time & location</div>
+          <div class="step-desc">Choose 10, 20, or 30 minutes and whether you're at your desk, at home, or at the gym.</div>
+        </div>
+        <div class="step">
+          <div class="step-number">02</div>
+          <div class="step-title">AI builds your plan</div>
+          <div class="step-desc">Claude generates a personalized workout in seconds — calibrated to your fitness level, goal, and setup.</div>
+        </div>
+        <div class="step">
+          <div class="step-number">03</div>
+          <div class="step-title">Follow along & track</div>
+          <div class="step-desc">Guided timers, set tracking, rest countdowns, and a completion screen that logs your progress automatically.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="pricing" id="pricing">
+    <div class="wrap">
+      <div class="section-label">Pricing</div>
+      <h2 class="section-title">Start free.<br />Upgrade when ready.</h2>
+      <p class="section-sub">3 free workouts to try it out. No credit card required.</p>
+
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="pricing-plan">Monthly</div>
+          <div class="pricing-price"><sup>$</sup>2.99</div>
+          <div class="pricing-cadence">per month</div>
+          <ul class="pricing-features">
+            <li>Unlimited AI workouts</li>
+            <li>All locations</li>
+            <li>Progress tracking</li>
+            <li>Smart reminders</li>
+          </ul>
+          <a href="#download" class="pricing-btn outline">Get Started</a>
+        </div>
+
+        <div class="pricing-card featured">
+          <div class="pricing-badge">Most Popular</div>
+          <div class="pricing-plan">Yearly</div>
+          <div class="pricing-price"><sup>$</sup>14.99</div>
+          <div class="pricing-cadence">per year · ~$1.25/mo · save 58%</div>
+          <ul class="pricing-features">
+            <li>Unlimited AI workouts</li>
+            <li>All locations</li>
+            <li>Progress tracking</li>
+            <li>Smart reminders</li>
+          </ul>
+          <a href="#download" class="pricing-btn filled">Get Started</a>
+        </div>
+
+        <div class="pricing-card">
+          <div class="pricing-plan">Lifetime</div>
+          <div class="pricing-price"><sup>$</sup>29.99</div>
+          <div class="pricing-cadence">one-time purchase · forever</div>
+          <ul class="pricing-features">
+            <li>Unlimited AI workouts</li>
+            <li>All locations</li>
+            <li>Progress tracking</li>
+            <li>Smart reminders</li>
+          </ul>
+          <a href="#download" class="pricing-btn outline">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="download">
+    <div class="wrap">
+      <div class="cta-box">
+        <h2 class="cta-title">Your first 3 workouts are free.</h2>
+        <p class="cta-sub">No account. No credit card. Download and start moving in under a minute.</p>
+        <div class="cta-actions">
+          <a href="#" class="app-store-btn">
+            <span class="app-store-icon">🍎</span>
+            <div>
+              <div style="font-size:0.65rem; font-weight:400; opacity:0.6; line-height:1;">Download on the</div>
+              <div style="font-size:0.95rem; font-weight:700; line-height:1.2;">App Store</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="wrap">
+      <div class="footer-inner">
+        <a href="index.html" class="footer-logo">tessbuilds</a>
+        <div class="footer-links">
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+        </div>
+        <span class="footer-copy">© 2026 tessbuilds · DeskFit AI</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal for cards, steps, pricing
+    const revealEls = document.querySelectorAll('.feature-card, .step, .pricing-card');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), 80 * (Array.from(revealEls).indexOf(e.target) % 3));
+          revealObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    // Smooth nav links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if (href === '#') return;
+        const target = document.querySelector(href);
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+      });
     });
-  });
-</script>
+  </script>
+
 </body>
 </html>
